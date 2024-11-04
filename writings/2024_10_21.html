@@ -1,25 +1,530 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> </title>
+    <title>Military AircraftCV</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   </head>
   <body>
-    <h1>Military AircraftCV</h1>
-    <b>2024_10_21</b>
-    : <a href="2024_09_28.html">previous</a> : <a href="index.html">next</a> :
-    <a href="index.html">index</a>
-    <p>CONTENT</p>
-    <br />
-    <br />
-    <p>
-      <a href="index.html">Index</a>
-    </p>
-    <p align="right">
-      <small>
-        <a href="/">...</a>
-      </small>
-    </p>
+    <div class="container">
+      <h1>Military AircraftCV</h1>
+      <b>2024-10-21</b>
+      : <a href="2024_09_28.html">previous</a> : <a href="index.html">next</a> :
+      <a href="index.html">index</a>
+
+      <h2>
+        Building an Efficient Aircraft Detection System: Navigating Challenges
+        with a Lean Dataset
+      </h2>
+
+      <p>
+        Creating an aircraft detection system is an ambitious project that
+        blends the complexities of computer vision with the intricacies of
+        machine learning. In this blog post, I'll delve into the journey of
+        developing my aircraft detection code, highlighting the strategic
+        decisions, the structure of my GitHub repository, and the lessons
+        learned along the way. While the system has only achieved partial
+        success, the experience has been invaluable in understanding both the
+        potentials and limitations of machine learning models in real-world
+        applications.
+      </p>
+
+      <h3>1. Motivation: The Need for Efficient Aircraft Detection</h3>
+
+      <p>
+        Aircraft detection plays a crucial role in various domains, including
+        aviation safety, airport security, and air traffic management.
+        Automating this process not only enhances efficiency but also reduces
+        the likelihood of human error. Inspired by these applications, I
+        embarked on creating an aircraft detection system capable of identifying
+        and classifying military aircraft from images.
+      </p>
+
+      <h3>2. Leveraging a Lean Dataset for Rapid Development</h3>
+
+      <h4>A. Dataset Selection</h4>
+
+      <p>
+        For this project, I utilized the
+        <a
+          href="https://www.kaggle.com/datasets/a2015003713/militaryaircraftdetectiondataset"
+          >Military Aircraft Detection Dataset</a
+        >
+        from Kaggle. This dataset comprises a diverse collection of military
+        aircraft images, providing a solid foundation for training a detection
+        model. However, recognizing the computational constraints and the need
+        for faster training iterations, I opted to use a subset of
+        <strong>1,000 images</strong> from the original dataset.
+      </p>
+
+      <h4>B. Benefits of a Lean Dataset</h4>
+
+      <p>Choosing a smaller dataset offered several advantages:</p>
+      <ul>
+        <li>
+          <strong>Faster Training Times</strong>: With fewer images, the
+          training process became significantly quicker, allowing for rapid
+          experimentation and iteration.
+        </li>
+        <li>
+          <strong>Resource Efficiency</strong>: Limited computational resources
+          meant that working with a lean dataset was more feasible, preventing
+          potential bottlenecks associated with processing large volumes of
+          data.
+        </li>
+        <li>
+          <strong>Focused Learning</strong>: A curated subset allowed for more
+          controlled analysis of the model's performance, making it easier to
+          identify patterns and areas needing improvement.
+        </li>
+      </ul>
+
+      <h3>3. Repository Structure and Code Segments</h3>
+
+      <p>
+        My GitHub repository for this project is organized to facilitate clarity
+        and ease of navigation. Here's an overview of the key components:
+      </p>
+
+      <h4>A. <code>dataset.py</code>: Data Handling and Preprocessing</h4>
+
+      <p>
+        This script is responsible for loading the dataset, performing necessary
+        preprocessing steps, and preparing the data for training. Key
+        functionalities include:
+      </p>
+      <ul>
+        <li>
+          <strong>Data Augmentation</strong>: Applying transformations such as
+          rotation, flipping, and scaling to enhance the diversity of the
+          training data.
+        </li>
+        <li>
+          <strong>Normalization</strong>: Scaling pixel values to ensure
+          consistent input for the neural network.
+        </li>
+        <li>
+          <strong>Dataset Splitting</strong>: Dividing the data into training,
+          validation, and testing sets to evaluate the model's performance
+          accurately.
+        </li>
+      </ul>
+
+      <pre><code># Example snippet from dataset.py
+import torch
+from torchvision import transforms, datasets
+
+def get_data_loaders(batch_size=32):
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
+    ])
+    
+    dataset = datasets.ImageFolder(root='data/', transform=transform)
+    train_size = int(0.8 * len(dataset))
+    val_size = int(0.1 * len(dataset))
+    test_size = len(dataset) - train_size - val_size
+    
+    train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
+        dataset, [train_size, val_size, test_size])
+    
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    
+    return train_loader, val_loader, test_loader
+</code></pre>
+
+      <h4>
+        B. <code>model.py</code>: Defining the Neural Network Architecture
+      </h4>
+
+      <p>
+        This file outlines the architecture of the Convolutional Neural Network
+        (CNN) used for aircraft detection. I experimented with several
+        architectures, ultimately selecting a variant of
+        <strong>ResNet</strong> due to its proven effectiveness in image
+        recognition tasks.
+      </p>
+
+      <pre><code># Example snippet from model.py
+import torch.nn as nn
+import torchvision.models as models
+
+def get_model(num_classes):
+    model = models.resnet18(pretrained=True)
+    num_ftrs = model.fc.in_features
+    model.fc = nn.Linear(num_ftrs, num_classes)
+    return model
+</code></pre>
+
+      <h4>C. <code>train.py</code>: Training the Model</h4>
+
+      <p>
+        The training script orchestrates the learning process, handling the
+        forward and backward passes, loss computation, and optimizer updates.
+        Key aspects include:
+      </p>
+      <ul>
+        <li>
+          <strong>Loss Function</strong>: Utilizing Cross-Entropy Loss for
+          classification.
+        </li>
+        <li>
+          <strong>Optimizer</strong>: Employing the Adam optimizer for efficient
+          parameter updates.
+        </li>
+        <li>
+          <strong>Epochs and Batch Size</strong>: Setting parameters to balance
+          training time and model performance.
+        </li>
+      </ul>
+
+      <pre><code># Example snippet from train.py
+import torch
+import torch.optim as optim
+from dataset import get_data_loaders
+from model import get_model
+
+def train_model():
+    train_loader, val_loader, _ = get_data_loaders(batch_size=32)
+    model = get_model(num_classes=5)  # Assuming 5 classes
+    model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+    
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    
+    for epoch in range(10):
+        model.train()
+        running_loss = 0.0
+        for inputs, labels in train_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item()
+        
+        print(f"Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}")
+        # Add validation logic here
+    
+    torch.save(model.state_dict(), 'model.pth')
+</code></pre>
+
+      <h4>D. <code>evaluate.py</code>: Assessing Model Performance</h4>
+
+      <p>
+        Post-training, this script evaluates the model's accuracy, precision,
+        recall, and other relevant metrics on the validation and test datasets.
+        It also generates confusion matrices and other visualizations to
+        understand the model's strengths and weaknesses.
+      </p>
+
+      <pre><code># Example snippet from evaluate.py
+import torch
+from dataset import get_data_loaders
+from model import get_model
+from sklearn.metrics import classification_report, confusion_matrix
+
+def evaluate_model():
+    _, _, test_loader = get_data_loaders(batch_size=32)
+    model = get_model(num_classes=5)
+    model.load_state_dict(torch.load('model.pth'))
+    model = model.to('cuda' if torch.cuda.is_available() else 'cpu')
+    model.eval()
+    
+    all_preds = []
+    all_labels = []
+    
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            inputs = inputs.to(device)
+            outputs = model(inputs)
+            _, preds = torch.max(outputs, 1)
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(labels.numpy())
+    
+    print(classification_report(all_labels, all_preds))
+    print(confusion_matrix(all_labels, all_preds))
+</code></pre>
+
+      <h4>E. <code>predict.py</code>: Deploying the Model for Inference</h4>
+
+      <p>
+        This script facilitates the deployment of the trained model, allowing
+        for real-time or batch predictions on new images. It handles image
+        preprocessing, model inference, and result visualization with bounding
+        boxes around detected aircraft.
+      </p>
+
+      <pre><code># Example snippet from predict.py
+import torch
+from PIL import Image
+from torchvision import transforms
+from model import get_model
+
+def predict_image(image_path):
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
+    ])
+    
+    image = Image.open(image_path).convert('RGB')
+    image = transform(image).unsqueeze(0)
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    
+    model = get_model(num_classes=5)
+    model.load_state_dict(torch.load('model.pth', map_location=device))
+    model = model.to(device)
+    model.eval()
+    
+    with torch.no_grad():
+        outputs = model(image.to(device))
+        _, preds = torch.max(outputs, 1)
+    
+    return preds.item()
+</code></pre>
+
+      <h4>F. <code>utils.py</code>: Auxiliary Functions</h4>
+
+      <p>
+        This file contains utility functions that support various operations
+        across the project, such as data visualization, performance logging, and
+        other helper methods.
+      </p>
+
+      <pre><code># Example snippet from utils.py
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_confusion_matrix(cm, classes):
+    plt.figure(figsize=(10,8))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    
+    # Normalize the confusion matrix.
+    cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+    
+    thresh = cm.max() / 2.
+    for i, j in np.ndindex(cm.shape):
+        plt.text(j, i, f"{cm[i, j]} ({cm_normalized[i, j]:.2f})",
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+    
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.tight_layout()
+    plt.show()
+</code></pre>
+
+      <h3>
+        4. Training with a Limited Dataset: Balancing Speed and Performance
+      </h3>
+
+      <h4>A. Choosing 1,000 Images</h4>
+
+      <p>
+        Opting to use a subset of <strong>1,000 images</strong> from the Kaggle
+        dataset was a strategic decision aimed at achieving faster training
+        times. This choice allowed for:
+      </p>
+      <ul>
+        <li>
+          <strong>Rapid Iteration</strong>: Quickly testing different model
+          architectures and hyperparameters without long waiting periods.
+        </li>
+        <li>
+          <strong>Resource Management</strong>: Minimizing the computational
+          load, especially beneficial if working on a machine with limited GPU
+          capabilities.
+        </li>
+      </ul>
+
+      <h4>B. Implications of a Smaller Dataset</h4>
+
+      <p>
+        While a lean dataset accelerates development, it introduces certain
+        challenges:
+      </p>
+      <ul>
+        <li>
+          <strong>Limited Diversity</strong>: With fewer images, the model might
+          not capture the full variability present in the broader dataset,
+          potentially affecting its generalization capabilities.
+        </li>
+        <li>
+          <strong>Risk of Overfitting</strong>: A smaller dataset increases the
+          likelihood of the model memorizing the training data rather than
+          learning to generalize from it.
+        </li>
+      </ul>
+
+      <h3>5. Achieving Partial Success: Near Misses in Detection</h3>
+
+      <h4>A. Model Performance Insights</h4>
+
+      <p>
+        During evaluation, the model demonstrated the ability to detect aircraft
+        in images, often getting
+        <strong>close to the actual aircraft</strong> but not always pinpointing
+        the exact one. This partial success highlighted both the strengths and
+        areas needing improvement in the current approach.
+      </p>
+
+      <h4>B. Sensitivity and Detection Accuracy</h4>
+
+      <p>
+        To ensure that the model could detect aircraft, I had to
+        <strong>adjust the sensitivity</strong> of the detection thresholds.
+        Lowering the sensitivity made the model more permissive in recognizing
+        aircraft, which was a double-edged sword:
+      </p>
+      <ul>
+        <li>
+          <strong>Pros</strong>:
+          <ul>
+            <li>
+              <strong>Increased Detection Rates</strong>: More aircraft were
+              detected, even if the detections weren't always precise.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Cons</strong>:
+          <ul>
+            <li>
+              <strong>Higher False Positives</strong>: The model occasionally
+              flagged non-aircraft objects as aircraft, reducing overall
+              accuracy.
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>C. Challenges with Precise Detection</h4>
+
+      <p>
+        Several factors contributed to the model's inability to consistently
+        detect aircraft accurately:
+      </p>
+      <ul>
+        <li>
+          <strong>Image Quality and Variability</strong>: Differences in
+          lighting, angles, and backgrounds made it challenging for the model to
+          maintain consistent performance across all images.
+        </li>
+        <li>
+          <strong>Dataset Size</strong>: The limited number of training images
+          restricted the model's exposure to diverse scenarios, hindering its
+          ability to generalize effectively.
+        </li>
+        <li>
+          <strong>Model Complexity</strong>: While a ResNet-based architecture
+          is robust, further tuning and potentially more advanced architectures
+          could enhance detection precision.
+        </li>
+      </ul>
+
+      <h3>6. Lessons Learned and Future Directions</h3>
+
+      <h4>A. Importance of Dataset Diversity</h4>
+
+      <p>
+        A more extensive and diverse dataset would likely improve the model's
+        ability to detect aircraft accurately across various conditions. Future
+        efforts will focus on expanding the dataset and incorporating more
+        challenging scenarios to enhance robustness.
+      </p>
+
+      <h4>B. Balancing Sensitivity and Specificity</h4>
+
+      <p>
+        Finding the right balance between sensitivity and specificity is
+        crucial. Techniques such as adjusting the detection threshold
+        dynamically or employing more sophisticated post-processing methods
+        could help achieve more precise detections without compromising
+        detection rates.
+      </p>
+
+      <h4>C. Exploring Advanced Architectures</h4>
+
+      <p>
+        Experimenting with more advanced or specialized architectures, such as
+        <strong>YOLO (You Only Look Once)</strong> or
+        <strong>Faster R-CNN</strong>, might offer improved detection
+        capabilities. These models are designed for object detection tasks and
+        could provide better localization of aircraft within images.
+      </p>
+
+      <h4>D. Enhancing Training Techniques</h4>
+
+      <p>
+        Implementing strategies like <strong>transfer learning</strong>, where
+        the model leverages pre-trained weights from large datasets, could
+        accelerate training and improve performance even with a smaller dataset.
+        Additionally, techniques like cross-validation and hyperparameter
+        optimization can further refine the model's capabilities.
+      </p>
+
+      <h3>7. Conclusion</h3>
+
+      <p>
+        The development of an aircraft detection system using a limited dataset
+        has been a journey of exploration and learning. While the current model
+        exhibits promising detection capabilities, achieving precise and
+        reliable aircraft identification remains a work in progress. The
+        challenges encountered, from managing large datasets to fine-tuning
+        model sensitivity, have provided valuable insights into the complexities
+        of machine learning projects.
+      </p>
+
+      <p>
+        As I continue to refine the system—expanding the dataset, experimenting
+        with advanced architectures, and enhancing detection accuracy—I remain
+        optimistic about the potential applications and the impact such a system
+        can have in the aviation sector. This project not only advances my
+        technical skills but also reinforces the importance of strategic
+        planning, iterative development, and continuous learning in the realm of
+        artificial intelligence.
+      </p>
+
+      <br />
+      <br />
+      <h3>links</h3>
+      <ul>
+        <li>
+          <a
+            href="https://www.kaggle.com/datasets/a2015003713/militaryaircraftdetectiondataset"
+          >
+            Military Aircraft Detection Dataset
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/IvanWinters/aircraft_detectionCV">
+            Github
+          </a>
+        </li>
+      </ul>
+      <p>
+        <a href="index.html">Index</a>
+      </p>
+
+      <p align="right">
+        <small>
+          <a href="/">...</a>
+        </small>
+      </p>
+    </div>
   </body>
 </html>

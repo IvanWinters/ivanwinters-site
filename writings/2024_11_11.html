@@ -7,7 +7,7 @@
   <body>
     <h1>League of Legends Minimap Detection</h1>
     <b>2024-11-11</b>
-    : <a href="2024_10_21.html">previous</a> : <a href="index.html">next</a> :
+    : <a href="2024_10_21.html">previous</a> : <a href="2024_12_14.html">next</a> :
     <a href="index.html">index</a>
 
     <h2>Project Proposal: Champion Icon Detection and Analysis in League of Legends Mini-Maps</h2>
@@ -16,40 +16,36 @@
 
     <h3>1. Main Project Idea or Theme</h3>
     <p>
-      The primary objective of this project is to develop a computer vision model that accurately
-      detects and delineates the icons of champions on the mini-map in League of Legends (LoL)
-      gameplay videos. By drawing precise borders around these icons and determining the confidence
-      levels of each detection, the model aims to provide detailed spatial and statistical insights
-      into champion positions and movements throughout a game. This tool can serve as a foundational
-      component for advanced analytics in competitive gaming, offering deeper understanding and new
-      metrics beyond traditional in-game statistics.
+      The primary objective of this project is to develop a computer vision model that accurately detects and delineates
+      the icons of champions on the mini-map in League of Legends (LoL) gameplay videos. By drawing precise borders
+      around these icons and determining the confidence levels of each detection, the model aims to provide detailed
+      spatial and statistical insights into champion positions and movements throughout a game. This tool can serve as a
+      foundational component for advanced analytics in competitive gaming, offering deeper understanding and new metrics
+      beyond traditional in-game statistics.
     </p>
 
     <h3>2. Proposed Approach</h3>
     <p>
-      To achieve accurate detection of champion icons on the mini-map, the project will follow a
-      multi-step approach:
+      To achieve accurate detection of champion icons on the mini-map, the project will follow a multi-step approach:
     </p>
     <ol>
       <li>
         <strong>Data Preprocessing:</strong>
         <ul>
           <li>Extract frames from raw VOD (Video on Demand) footage at a consistent frame rate.</li>
-          <li>
-            Normalize and resize frames to a standard resolution to ensure uniformity in input data.
-          </li>
+          <li>Normalize and resize frames to a standard resolution to ensure uniformity in input data.</li>
         </ul>
       </li>
       <li>
         <strong>Model Selection and Architecture:</strong>
         <ul>
           <li>
-            Utilize a state-of-the-art object detection framework such as YOLO (You Only Look Once)
-            or Faster R-CNN, known for their real-time detection capabilities and high accuracy.
+            Utilize a state-of-the-art object detection framework such as YOLO (You Only Look Once) or Faster R-CNN,
+            known for their real-time detection capabilities and high accuracy.
           </li>
           <li>
-            Fine-tune a pre-trained model on a dataset specific to LoL mini-maps to leverage
-            transfer learning and reduce training time.
+            Fine-tune a pre-trained model on a dataset specific to LoL mini-maps to leverage transfer learning and
+            reduce training time.
           </li>
         </ul>
       </li>
@@ -57,8 +53,8 @@
         <strong>Annotation and Labeling:</strong>
         <ul>
           <li>
-            Create a labeled dataset by manually annotating champion icons on a diverse set of
-            mini-map images to train the model effectively.
+            Create a labeled dataset by manually annotating champion icons on a diverse set of mini-map images to train
+            the model effectively.
           </li>
         </ul>
       </li>
@@ -67,8 +63,8 @@
         <ul>
           <li>Split the dataset into training, validation, and testing subsets.</li>
           <li>
-            Implement data augmentation techniques to enhance model robustness against varying
-            in-game conditions and visual noise.
+            Implement data augmentation techniques to enhance model robustness against varying in-game conditions and
+            visual noise.
           </li>
         </ul>
       </li>
@@ -76,17 +72,15 @@
         <strong>Post-Processing:</strong>
         <ul>
           <li>Apply non-maximum suppression to eliminate redundant bounding boxes.</li>
-          <li>
-            Calculate confidence scores for each detected icon to assess detection reliability.
-          </li>
+          <li>Calculate confidence scores for each detected icon to assess detection reliability.</li>
         </ul>
       </li>
       <li>
         <strong>Integration and Visualization:</strong>
         <ul>
           <li>
-            Develop a user interface to visualize the detected icons and their confidence levels in
-            real-time or from recorded gameplay videos.
+            Develop a user interface to visualize the detected icons and their confidence levels in real-time or from
+            recorded gameplay videos.
           </li>
         </ul>
       </li>
@@ -98,13 +92,12 @@
         <strong>Input Data:</strong>
         <ul>
           <li>
-            <strong>Raw VOD Footage:</strong> Video recordings of League of Legends gameplay, which
-            are widely available across platforms like Twitch, YouTube, and official LoL streaming
-            services.
+            <strong>Raw VOD Footage:</strong> Video recordings of League of Legends gameplay, which are widely available
+            across platforms like Twitch, YouTube, and official LoL streaming services.
           </li>
           <li>
-            <strong>Frame Extraction:</strong> Individual frames extracted from the VODs will serve
-            as the primary input for the model.
+            <strong>Frame Extraction:</strong> Individual frames extracted from the VODs will serve as the primary input
+            for the model.
           </li>
         </ul>
       </li>
@@ -112,12 +105,11 @@
         <strong>Output Data:</strong>
         <ul>
           <li>
-            <strong>Bounding Boxes:</strong> Precise coordinates outlining each detected champion
-            icon on the mini-map.
+            <strong>Bounding Boxes:</strong> Precise coordinates outlining each detected champion icon on the mini-map.
           </li>
           <li>
-            <strong>Confidence Scores:</strong> Numerical values representing the model's confidence
-            in each detection, aiding in the assessment of detection reliability.
+            <strong>Confidence Scores:</strong> Numerical values representing the model's confidence in each detection,
+            aiding in the assessment of detection reliability.
           </li>
         </ul>
       </li>
@@ -125,16 +117,16 @@
 
     <h3>4. Training Data — Sources and Acquisition</h3>
     <p>
-      To train the model effectively, a substantial and diverse dataset is essential. The following
-      sources and methods will be employed to gather and prepare the training data:
+      To train the model effectively, a substantial and diverse dataset is essential. The following sources and methods
+      will be employed to gather and prepare the training data:
     </p>
     <ol>
       <li>
         <strong>VOD Collection:</strong>
         <ul>
           <li>
-            Scrape and download VODs from popular streaming platforms like Twitch and YouTube,
-            focusing on high-quality recordings to ensure clarity of mini-map visuals.
+            Scrape and download VODs from popular streaming platforms like Twitch and YouTube, focusing on high-quality
+            recordings to ensure clarity of mini-map visuals.
           </li>
         </ul>
       </li>
@@ -142,12 +134,11 @@
         <strong>Manual Annotation:</strong>
         <ul>
           <li>
-            Utilize annotation tools such as LabelImg or CVAT to manually label champion icons on
-            mini-map images.
+            Utilize annotation tools such as LabelImg or CVAT to manually label champion icons on mini-map images.
           </li>
           <li>
-            Ensure annotations cover various in-game scenarios, including different map phases,
-            champion abilities that might obscure icons, and diverse team compositions.
+            Ensure annotations cover various in-game scenarios, including different map phases, champion abilities that
+            might obscure icons, and diverse team compositions.
           </li>
         </ul>
       </li>
@@ -155,8 +146,8 @@
         <strong>Data Augmentation:</strong>
         <ul>
           <li>
-            Apply transformations like rotation, scaling, and brightness adjustments to increase
-            dataset variability and improve model generalization.
+            Apply transformations like rotation, scaling, and brightness adjustments to increase dataset variability and
+            improve model generalization.
           </li>
         </ul>
       </li>
@@ -164,8 +155,8 @@
         <strong>Dataset Diversity:</strong>
         <ul>
           <li>
-            Include VODs from different regions, skill levels, and game modes to capture a wide
-            range of mini-map presentations and champion icon variations.
+            Include VODs from different regions, skill levels, and game modes to capture a wide range of mini-map
+            presentations and champion icon variations.
           </li>
         </ul>
       </li>
@@ -173,24 +164,24 @@
 
     <h3>5. Evaluation Plan</h3>
     <p>
-      To assess the performance and effectiveness of the developed model, the following evaluation
-      strategies will be implemented:
+      To assess the performance and effectiveness of the developed model, the following evaluation strategies will be
+      implemented:
     </p>
     <ol>
       <li>
         <strong>Quantitative Metrics:</strong>
         <ul>
           <li>
-            <strong>Precision and Recall:</strong> Measure the model's ability to correctly identify
-            champion icons (precision) and its capability to detect all relevant icons (recall).
+            <strong>Precision and Recall:</strong> Measure the model's ability to correctly identify champion icons
+            (precision) and its capability to detect all relevant icons (recall).
           </li>
           <li>
-            <strong>Mean Average Precision (mAP):</strong> Evaluate the overall accuracy of the
-            model across different IoU (Intersection over Union) thresholds.
+            <strong>Mean Average Precision (mAP):</strong> Evaluate the overall accuracy of the model across different
+            IoU (Intersection over Union) thresholds.
           </li>
           <li>
-            <strong>F1-Score:</strong> Provide a balanced metric combining precision and recall to
-            assess the model's accuracy.
+            <strong>F1-Score:</strong> Provide a balanced metric combining precision and recall to assess the model's
+            accuracy.
           </li>
         </ul>
       </li>
@@ -198,12 +189,12 @@
         <strong>Qualitative Analysis:</strong>
         <ul>
           <li>
-            Conduct visual inspections of detection results on a set of unseen gameplay videos to
-            identify and analyze any misdetections or missed icons.
+            Conduct visual inspections of detection results on a set of unseen gameplay videos to identify and analyze
+            any misdetections or missed icons.
           </li>
           <li>
-            Gather feedback from League of Legends players and analysts to understand the practical
-            utility and areas for improvement.
+            Gather feedback from League of Legends players and analysts to understand the practical utility and areas
+            for improvement.
           </li>
         </ul>
       </li>
@@ -211,8 +202,8 @@
         <strong>Benchmarking:</strong>
         <ul>
           <li>
-            Compare the model's performance against existing object detection models or any baseline
-            methods to determine relative effectiveness.
+            Compare the model's performance against existing object detection models or any baseline methods to
+            determine relative effectiveness.
           </li>
         </ul>
       </li>
@@ -220,8 +211,8 @@
         <strong>Real-Time Performance:</strong>
         <ul>
           <li>
-            Assess the model's inference speed to ensure it meets real-time processing requirements,
-            which is crucial for live analytics applications.
+            Assess the model's inference speed to ensure it meets real-time processing requirements, which is crucial
+            for live analytics applications.
           </li>
         </ul>
       </li>
@@ -229,17 +220,16 @@
 
     <h3>6. Impact</h3>
     <p>
-      While the project's focus is niche, its successful implementation holds significant value
-      within the competitive gaming community and beyond:
+      While the project's focus is niche, its successful implementation holds significant value within the competitive
+      gaming community and beyond:
     </p>
     <ol>
       <li>
         <strong>Enhanced Player Analytics:</strong>
         <ul>
           <li>
-            Provide detailed spatial data on champion positions and movements, enabling players and
-            coaches to analyze strategies, positioning, and decision-making processes more
-            effectively.
+            Provide detailed spatial data on champion positions and movements, enabling players and coaches to analyze
+            strategies, positioning, and decision-making processes more effectively.
           </li>
         </ul>
       </li>
@@ -247,8 +237,8 @@
         <strong>Pro Play Scoring:</strong>
         <ul>
           <li>
-            Contribute to the development of advanced metrics for evaluating player performance in
-            professional matches, potentially influencing player rankings and scouting.
+            Contribute to the development of advanced metrics for evaluating player performance in professional matches,
+            potentially influencing player rankings and scouting.
           </li>
         </ul>
       </li>
@@ -256,8 +246,8 @@
         <strong>Statistical Insights:</strong>
         <ul>
           <li>
-            Generate novel statistics that are not captured by traditional in-game metrics, offering
-            deeper insights into game dynamics and champion interactions.
+            Generate novel statistics that are not captured by traditional in-game metrics, offering deeper insights
+            into game dynamics and champion interactions.
           </li>
         </ul>
       </li>
@@ -265,8 +255,8 @@
         <strong>Broadening Research Horizons:</strong>
         <ul>
           <li>
-            Serve as a foundation for further research in esports analytics, encouraging the
-            integration of computer vision techniques in other aspects of game analysis.
+            Serve as a foundation for further research in esports analytics, encouraging the integration of computer
+            vision techniques in other aspects of game analysis.
           </li>
         </ul>
       </li>
@@ -274,17 +264,17 @@
         <strong>Community Engagement:</strong>
         <ul>
           <li>
-            Foster a more data-driven approach within the League of Legends community, promoting
-            informed discussions and strategic improvements among players.
+            Foster a more data-driven approach within the League of Legends community, promoting informed discussions
+            and strategic improvements among players.
           </li>
         </ul>
       </li>
     </ol>
 
     <p>
-      In essence, this project bridges the gap between raw gameplay data and actionable insights,
-      empowering stakeholders in the esports ecosystem with tools to enhance performance, strategy,
-      and overall understanding of the game.
+      In essence, this project bridges the gap between raw gameplay data and actionable insights, empowering
+      stakeholders in the esports ecosystem with tools to enhance performance, strategy, and overall understanding of
+      the game.
     </p>
 
     <hr />

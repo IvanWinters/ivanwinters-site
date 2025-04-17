@@ -7,59 +7,48 @@
   <body>
     <h1>LeagueVision</h1>
     <b>2024-12-14</b>
-    : <a href="2024_11_11.html">previous</a> : <a href="index.html">next</a> :
+    : <a href="2024_11_11.html">previous</a> : <a href="2024_12_15.html">next</a> :
     <a href="index.html">index</a>
 
     <p><strong>CONTENT</strong></p>
     <p>
-      Detecting champions on the League of Legends minimap involves several key steps and components. The goal
-      is to identify champion icons on the minimap in a given gameplay video using traditional computer vision
-      techniques.
+      Detecting champions on the League of Legends minimap involves several key steps and components. The goal is to identify champion icons on the
+      minimap in a given gameplay video using traditional computer vision techniques.
     </p>
 
     <h2>Data Preparation</h2>
     <p>First, we start with two main data sources:</p>
     <ul>
       <li>
-        <strong>Champion Icons:</strong> A set of .png files, each representing a champion’s minimap icon.
-        These serve as templates for matching.
+        <strong>Champion Icons:</strong> A set of .png files, each representing a champion’s minimap icon. These serve as templates for matching.
       </li>
-      <li>
-        <strong>Gameplay Clips:</strong> Raw gameplay videos that show the entire League of Legends screen,
-        including the minimap.
-      </li>
+      <li><strong>Gameplay Clips:</strong> Raw gameplay videos that show the entire League of Legends screen, including the minimap.</li>
     </ul>
     <p>
-      Before attempting detection, we run a script <code>crop_minimap.py</code> that extracts only the minimap
-      region from the full gameplay footage. This results in a simplified, smaller video showing only the
-      minimap—making our detection task more focused and efficient.
+      Before attempting detection, we run a script <code>crop_minimap.py</code> that extracts only the minimap region from the full gameplay footage.
+      This results in a simplified, smaller video showing only the minimap—making our detection task more focused and efficient.
     </p>
 
     <h2>Approach</h2>
-    <p>
-      With the minimap-only video, we use <code>LeagueVisionCV.py</code> to apply OpenCV’s template matching
-      technique.
-    </p>
+    <p>With the minimap-only video, we use <code>LeagueVisionCV.py</code> to apply OpenCV’s template matching technique.</p>
     <ol>
       <li>
-        <strong>Load and Resize Icons:</strong> The code reads in icons from the
-        <code>champion_icons</code> directory and resizes them based on a ratio to ensure they match the scale
-        of the minimap.
+        <strong>Load and Resize Icons:</strong> The code reads in icons from the <code>champion_icons</code> directory and resizes them based on a
+        ratio to ensure they match the scale of the minimap.
       </li>
       <li>
-        <strong>Icon Cropping:</strong> A portion of the icon is cropped (using
-        <code>ICON_SEARCH_RATIO</code>) so that only the central, most distinctive part of the icon is used.
-        This can improve matching accuracy.
+        <strong>Icon Cropping:</strong> A portion of the icon is cropped (using <code>ICON_SEARCH_RATIO</code>) so that only the central, most
+        distinctive part of the icon is used. This can improve matching accuracy.
       </li>
       <li>
-        <strong>Template Matching:</strong> For each frame of the minimap-only video, the code converts the
-        frame to grayscale and runs <code>cv2.matchTemplate</code> against each champion icon. If a match
-        exceeds the <code>THRESHOLD</code> value, we consider it a valid detection.
+        <strong>Template Matching:</strong> For each frame of the minimap-only video, the code converts the frame to grayscale and runs
+        <code>cv2.matchTemplate</code> against each champion icon. If a match exceeds the <code>THRESHOLD</code> value, we consider it a valid
+        detection.
       </li>
       <li>
         <strong>Drawing Bounding Boxes:</strong>
-        When a match is found, the code draws a bounding box around the detected champion icon’s location on
-        the minimap. It also prints the champion’s name and the match confidence score.
+        When a match is found, the code draws a bounding box around the detected champion icon’s location on the minimap. It also prints the
+        champion’s name and the match confidence score.
       </li>
     </ol>
 
@@ -76,8 +65,8 @@ icon_size = int(minimap_size * ICON_RATIO)
 icons = load_icons(ICONS_FOLDER, icon_size)
 </code></pre>
     <p>
-      Here, we determine <code>icon_size</code> by taking the smallest dimension of the minimap frame and
-      multiplying by <code>ICON_RATIO</code>. This ensures the icons scale proportionally to the minimap.
+      Here, we determine <code>icon_size</code> by taking the smallest dimension of the minimap frame and multiplying by <code>ICON_RATIO</code>. This
+      ensures the icons scale proportionally to the minimap.
     </p>
 
     <h3>Cropping Icons</h3>
@@ -88,8 +77,8 @@ crop_margin_h = int(h * ICON_SEARCH_RATIO / 2)
 icon = icon[crop_margin_h:h - crop_margin_h, crop_margin_w:w - crop_margin_w]
 </code></pre>
     <p>
-      This snippet takes the loaded icon and crops it to focus on the center. By removing some of the icon’s
-      border areas, you may get more reliable template matches.
+      This snippet takes the loaded icon and crops it to focus on the center. By removing some of the icon’s border areas, you may get more reliable
+      template matches.
     </p>
 
     <h3>Template Matching</h3>
@@ -101,9 +90,8 @@ if max_val >= THRESHOLD:
     ...
 </code></pre>
     <p>
-      Using <code>cv2.matchTemplate</code>, we scan the entire minimap frame for the presence of the champion
-      icon. If <code>max_val</code> (the best match score) is greater than our chosen threshold, we consider
-      it a successful detection.
+      Using <code>cv2.matchTemplate</code>, we scan the entire minimap frame for the presence of the champion icon. If <code>max_val</code> (the best
+      match score) is greater than our chosen threshold, we consider it a successful detection.
     </p>
 
     <h3>Drawing Bounding Boxes</h3>
@@ -116,21 +104,20 @@ cv2.putText(detected_frame, f"{champion} ({max_val:.2f})",
             0.5, (0, 255, 255), 1)
 </code></pre>
     <p>
-      Once a valid match is found, this code draws a yellow bounding box and labels it with the champion’s
-      name and confidence score. The result is a visual overlay on the minimap video.
+      Once a valid match is found, this code draws a yellow bounding box and labels it with the champion’s name and confidence score. The result is a
+      visual overlay on the minimap video.
     </p>
 
     <h2>Iterative Improvements</h2>
     <p>
-      We experimented with different values for <code>THRESHOLD</code> and <code>ICON_RATIO</code> to find a
-      balance between detecting champions accurately and minimizing false positives.
+      We experimented with different values for <code>THRESHOLD</code> and <code>ICON_RATIO</code> to find a balance between detecting champions
+      accurately and minimizing false positives.
     </p>
 
     <h2>Results</h2>
     <p>
-      After these adjustments, the final output shows bounding boxes over recognized champions on the minimap.
-      By initially showing a video of the raw minimap and then showing it with detection overlays, readers can
-      see how the code successfully identifies champions.
+      After these adjustments, the final output shows bounding boxes over recognized champions on the minimap. By initially showing a video of the raw
+      minimap and then showing it with detection overlays, readers can see how the code successfully identifies champions.
       <br /><br />
 
       <video width="640" height="480" controls>
@@ -157,19 +144,16 @@ cv2.putText(detected_frame, f"{champion} ({max_val:.2f})",
       <br />
       <br />
 
-      In all of these examples we see we get a couple champions detected. This is at .8 threshold which i felt
-      like yielded the best results. The threshold is the confidence level of the match. If the match is below
-      the threshold it will not show.
+      In all of these examples we see we get a couple champions detected. This is at .8 threshold which i felt like yielded the best results. The
+      threshold is the confidence level of the match. If the match is below the threshold it will not show.
       <br />
       <br />
-      Lets talk about the first video. It accurately detects 6 of the 9 champions on screen. Along with this
-      it also have some ghosts like for example on the bottom left sion is detected but is never there. I
-      couldn't get this to go away after tuning the threshold. Im surprised that it detected some of the
-      champions in the bottom right of the minimap since they were overlapping a lot and the screen indicator
-      which is the white box was obscuring the icon most of the time. With the other clips i had similar
-      results where it would detect ghost champions that weren't on the map. Funny enough sion and pantheon
-      were the most consistent. I wonder if this is because the openCV algorithm thinks those sections
-      resemble the icons i provided.
+      Lets talk about the first video. It accurately detects 6 of the 9 champions on screen. Along with this it also have some ghosts like for example
+      on the bottom left sion is detected but is never there. I couldn't get this to go away after tuning the threshold. Im surprised that it detected
+      some of the champions in the bottom right of the minimap since they were overlapping a lot and the screen indicator which is the white box was
+      obscuring the icon most of the time. With the other clips i had similar results where it would detect ghost champions that weren't on the map.
+      Funny enough sion and pantheon were the most consistent. I wonder if this is because the openCV algorithm thinks those sections resemble the
+      icons i provided.
     </p>
 
     <h2>Full Code: LeagueVisionCV.py</h2>

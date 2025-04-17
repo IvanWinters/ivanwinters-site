@@ -10,26 +10,58 @@
       <h1>ivan's writings</h1>
     </header>
 
+    <!-- Tag List for Filtering -->
+    <div>
+      <strong>Tags:</strong>
+      <a href="#" onclick="filterByTag('books')">[books]</a>
+      <a href="#" onclick="filterByTag('projects')">[projects]</a>
+      <a href="#" onclick="filterByTag('math')">[math]</a>
+      <a href="#" onclick="filterByTag('all')">[all]</a>
+    </div>
+
+    <!-- Writings Section -->
+    <h2>2025</h2>
+
+
+    
     <h2>2024</h2>
-    2024-12-14:
-    <a href="2024_12_14.html">LeagueVision(CSCI 4527 [Final Project])</a>
-    <br />
-    2024-11-11:
-    <a href="2024_11_11.html">League of Legends Minimap Detection(CSCI 4527 [project 4])</a>
-    <br />
-    2024-10-21:
-    <a href="2024_10_21.html">Military AircraftCV(CSCI 4527 [project 3])</a>
-    <br />
-    2024-09-28:
-    <a href="2024_09_28.html">ASCII Art Generator(CSCI 4527 [project 2])</a>
-    <br />
+      <div class="writing" data-tags="math">
+      2024-12-15: <a href="2024_12_15.html">The Halting Problem and other undecidable problems</a> [math]
+    <div class="writing" data-tags="projects">
+      2024-12-14: <a href="2024_12_14.html">LeagueVision</a> [projects]
+    </div>
+    <div class="writing" data-tags="">
+      2024-11-11: <a href="2024_11_11.html">League of Legends Minimap Detection</a>
+    </div>
+    <div class="writing" data-tags="projects">
+      2024-10-21: <a href="2024_10_21.html">Military AircraftCV</a> [projects]
+    </div>
+    <div class="writing" data-tags="projects">
+      2024-09-28: <a href="2024_09_28.html">ASCII Art Generator</a> [projects]
+    </div>
+
     <h2>2023</h2>
-    2023-01-25:
-    <a href="2023_01_25.html">The Future of the Internet(CSCI 4527 [project 1])</a>
-    <br />
+    <div class="writing" data-tags="">
+      2023-01-25:
+      <a href="2023_01_25.html">The Future of the Internet (CSCI 4527 writing)</a> [essays]
+    </div>
+
     <h2>2022</h2>
     <p align="right">
       <small><a href="https://ivanwinters.vercel.app/">winters...</a></small>
     </p>
+
+    <script>
+      function filterByTag(tag) {
+        const writings = document.querySelectorAll(".writing");
+        writings.forEach((writing) => {
+          if (tag === "all" || writing.dataset.tags.includes(tag)) {
+            writing.style.display = "";
+          } else {
+            writing.style.display = "none";
+          }
+        });
+      }
+    </script>
   </body>
 </html>

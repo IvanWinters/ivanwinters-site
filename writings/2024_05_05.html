@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Torus/Donut</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script src="../assets/torus/gl-matrix.js"></script>
+    <script src="../assets/torus/index.js"></script>
+  </head>
+  <body>
+    <h1>Torus/Donut in OpenGL without three.js</h1>
+    <b>2024-05-05</b>
+    : <a href="2023_01_25.html">previous</a> : <a href="2024_09_28.html">next</a> :
+    <a href="index.html">index</a>
+    <p>
+      Below is my final project for a computer graphics class. Originally wanted to do this idea with a pre-made blender model but I couldn't figure
+      out how to export it. So I made a torus/donut from scratch using OpenGL and gl-matrix. I put a texture on my torus to make it more donut like.
+      As you can see it distorts on the outer areas of the torus. I think this is because of the way I set up the texture coordinates. I used a
+      texture of a donut and I think the distortion is because the texture is not set up to be repeated. I also added some lighting to make it look
+      more realistic. I used a directional light and a point light. The point light is the one that is moving around the torus. I also added some
+      ambient light to make it look more realistic. I used a white light for the directional light and a yellow light for the point light.
+    </p>
+    <p>
+      Its not perfect but I think its a good start. If I ever decide to play around with web-graphics again I will be using three.js. -- until my next
+      graphics project (probably never).
+    </p>
+
+    <div id="canvas-holder">
+      <canvas width="600" height="600" id="webglcanvas"></canvas>
+    </div>
+
+    <p align="right">
+      <small>
+        <a href="/">...</a>
+      </small>
+    </p>
+  </body>
+</html>

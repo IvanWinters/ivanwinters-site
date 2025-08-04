@@ -13,3 +13,6 @@
 - [ - ] Resume
 - [ - ] update logs?
 - [ - ] future projects page
+- [ - ] buying domain name (ivanwinters.com or .org)\
+- [ - ] list of thing i own and review
+-
